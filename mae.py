@@ -4,14 +4,13 @@ import numpy as np
 
 # def main
 def main(): 
-    read_csv()
+    df = read_csv()
+    mean()
 
 # def read_csv
-def read_csv():
+def function read_csv():
     df = pd.read_csv("quartet.csv")
-    print(df)
-    print(df.columns)
-
+    return df
 
 # start
 if __name__ == "__main__":
