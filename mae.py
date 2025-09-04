@@ -2,69 +2,45 @@
 import pandas as pd
 import numpy as np
 
-# def main
 def main(): 
-    df = read_csv()
-    df_mn, df_var = calc(df)
-    df_out = corr(df_mn, df_var)
+    arr_in = read_csv()
+    arr_out = calc(arr_in)
+    df = corr(arr_out)
 
-# def read_csv
 def read_csv():
-    # store file
     df = pd.read_csv("quartet.csv")
-    # print(df.dtypes)
+    arr = np.array(df)
+    return arr
 
-    # convert values from str to numeric
-    # for col in df.columns: # for each column in the dataframe
-    #     if df[col].dtype == np.float64:
-    #         df[col] = df[col].astype(float)
-    return df
-
-# def calc: mean and var
-def calc(df):
-    df_in = df
-    # column names of input = output
-    col_names = df_in.columns
+def calc(arr_in):
     # store output
-    df_mn = pd.DataFrame (columns = col_names) # 1x8 matrix, same col name
-    df_var = pd.DataFrame(columns = col_names) # 1x8 matrix, same col name
+    n_row = int(1) # 1 row
+    n_col = int(arr_in.shape[1]) # 8 columns
+    arr_mn = np.empty((n_row, n_col))
+    arr_var = np.empty((n_row, n_col))
 
-    # iterate over every column 
-    for col in df.columns: # for i = 0 to num of columns 
-        # mean of the column values
-        mn = df_in[col].mean()
-        # var of the column values
-        var = df_in[col].var()
-        # insert in entry [0,col] in output df. col matches the column name
-        df_mn.loc[0,col] = mn
-        df_var.loc[0,col] = var
+    # calculate along axis = 0, which are the columns. calculation is done all at once, return array 1x8
+    mn = np.mean(arr_in, axis = 0) # 1x8 array
+    var = np.var(arr_in, axis = 0) # 1x8 array
+    # print(mn, var)
+
+    # reshape arr_mn and arr_var, return array 4x2
+    arr_mn = mn.reshape(4,2)
+    arr_var = var.reshape(4,2)
+    # print(arr_mn, arr_var)
+
+    # split array
+    x_mn = arr_mn[:, 0:1]
+    y_mn = arr_mn[:, 1:]
+    x_var = arr_var[:, 0:1]
+    y_var = arr_var[:, 1:]
+
+    # stack array
+    arr_out = np.hstack([x_mn, y_mn, x_var, y_var])
+    print(arr_out)
     
-    # sanity check
-    # print(df_mn, "\n", df_var)
-
-    # return 
-    return df_mn, df_var
-
-# def corr, one table w correlation calc
-def corr(df_mn, df_var):
-    # column names of input = output
-    col_names = df_mn.columns   
-    df_out = pd.DataFrame(columns = col_names)
-
-    # df to arrays
-    arr_mn = df_mn.values
-    arr_var = df_var.values
-
-    # reshape arrays
-    arr_mn = arr_mn.reshape(4,2)
-    arr_var = arr_var.reshape(4,2)
-
-    # arr to df
-    arr_out = 
+def corr(arr_out):
 
 
-    print(arr_mn, "\n", arr_var)
-
-# start
 if __name__ == "__main__":
     main()
