@@ -5,7 +5,7 @@ import numpy as np
 # def main
 def main(): 
     df = read_csv()
-    mean(df)
+    calc(df)
 
 # def read_csv
 def read_csv():
@@ -14,7 +14,7 @@ def read_csv():
     return df
 
 # def mean
-def mean(df):
+def calc(df):
     # store input
     df_in = df
     # store output
@@ -28,9 +28,9 @@ def mean(df):
     # find mean and var values
     for i in range(df_in.shape[1]): # for i = 0 to num of columns 
         # mean 
-        mn = df_in.column[i].mean()
+        mn = df_in.columns[i].mean()
         # var 
-        var = df_in.column[i].var()
+        var = df_in.columns[i].var()
         # insert in entry [0,i] in output df
         df_mn.loc[0,i] = mn
         df_var.loc[0,i] = var
