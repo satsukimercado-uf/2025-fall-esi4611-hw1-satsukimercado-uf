@@ -14,7 +14,7 @@ def read_csv():
 
     # convert values from str to numeric
     for col in df.columns: # for each column in the dataframe
-        if df[col].dtype == np.float then
+        if df[col].dtype == np.float:
             df[col] = df[col].astype(float)
     return df
 
