@@ -5,44 +5,65 @@ import numpy as np
 # def main
 def main(): 
     df = read_csv()
-    calc(df)
+    df_mn, df_var = calc(df)
+    df_out = corr(df_mn, df_var)
 
 # def read_csv
 def read_csv():
     # store file
     df = pd.read_csv("quartet.csv")
-    print(df.dtype)
+    # print(df.dtypes)
 
     # convert values from str to numeric
     # for col in df.columns: # for each column in the dataframe
     #     if df[col].dtype == np.float64:
     #         df[col] = df[col].astype(float)
-    # return df
+    return df
 
-# def mean
+# def calc: mean and var
 def calc(df):
-    # store input
     df_in = df
+    # column names of input = output
+    col_names = df_in.columns
     # store output
-    df_mn = pd.DataFrame () # 1x8 matrix
-    df_var = pd.DataFrame() # 1x8 matrix 
-    df_out = pd.DataFrame(columns = ['x_mean', 'y_mean', 'x_var', 'y_var', 'corr'])
+    df_mn = pd.DataFrame (columns = col_names) # 1x8 matrix, same col name
+    df_var = pd.DataFrame(columns = col_names) # 1x8 matrix, same col name
+
+    # iterate over every column 
+    for col in df.columns: # for i = 0 to num of columns 
+        # mean of the column values
+        mn = df_in[col].mean()
+        # var of the column values
+        var = df_in[col].var()
+        # insert in entry [0,col] in output df. col matches the column name
+        df_mn.loc[0,col] = mn
+        df_var.loc[0,col] = var
+    
+    # sanity check
+    # print(df_mn, "\n", df_var)
+
+    # return 
+    return df_mn, df_var
+
+# def corr, one table w correlation calc
+def corr(df_mn, df_var):
+    # column names of input = output
+    col_names = df_mn.columns   
+    df_out = pd.DataFrame(columns = col_names)
+
+    # df to arrays
+    arr_mn = df_mn.values
+    arr_var = df_var.values
+
+    # reshape arrays
+    arr_mn = arr_mn.reshape(4,2)
+    arr_var = arr_var.reshape(4,2)
+
+    # arr to df
+    arr_out = 
 
 
-    # df.shape[0] > row count, m = 0. df.shape[1] > column count, n = 1. 
-   
-    # find mean and var values
-    for i in range(df_in.shape[1]): # for i = 0 to num of columns 
-        # mean 
-        mn = df_in.columns[i].mean()
-        # var 
-        var = df_in.columns[i].var()
-        # insert in entry [0,i] in output df
-        df_mn.loc[0,i] = mn
-        df_var.loc[0,i] = var
-
-    print(df_mn, "\n", df_var)
-
+    print(arr_mn, "\n", arr_var)
 
 # start
 if __name__ == "__main__":
