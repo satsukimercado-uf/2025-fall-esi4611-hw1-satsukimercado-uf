@@ -4,19 +4,19 @@ import numpy as np
 
 # def main
 def main(): 
-    df_in = read_csv()
+    df = read_csv()
     mean(df)
 
 # def read_csv
 def read_csv():
     # store file
-    df_in = pd.read_csv("quartet.csv")
+    df = pd.read_csv("quartet.csv")
     return df
 
 # def mean
-def mean(df_in):
+def mean(df):
     # store input
-    df_in = df_in
+    df_in = df
     # store output
     df_mn = pd.DataFrame () # 1x8 matrix
     df_var = pd.DataFrame() # 1x8 matrix 
