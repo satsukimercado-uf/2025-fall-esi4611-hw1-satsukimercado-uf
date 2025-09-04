@@ -10,6 +10,7 @@ def main():
 def read_csv():
     df = pd.read_csv("quartet.csv")
     print(df)
+    print(df.columns)
 
 
 # start
