@@ -5,7 +5,7 @@ import numpy as np
 def main(): 
     arr_in = read_csv()
     arr_out = calc(arr_in)
-    df = corr(arr_out)
+    df = corr(arr_in)
 
 def read_csv():
     df = pd.read_csv("quartet.csv")
@@ -37,9 +37,16 @@ def calc(arr_in):
 
     # stack array
     arr_out = np.hstack([x_mn, y_mn, x_var, y_var])
-    print(arr_out)
+    # print(arr_out)
     
-def corr(arr_out):
+def corr(arr_in):
+    # output array
+    
+    # split array
+    n_col = arr_in.shape[1]
+    for i in range(0, n_col,2): # (start, end, step)
+        p = arr_in[:, i:i+2] # one pair
+        print(s)
 
 
 if __name__ == "__main__":
