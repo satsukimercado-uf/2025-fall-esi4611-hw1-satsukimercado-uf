@@ -11,12 +11,13 @@ def main():
 def read_csv():
     # store file
     df = pd.read_csv("quartet.csv")
+    print(df.dtype)
 
     # convert values from str to numeric
-    for col in df.columns: # for each column in the dataframe
-        if df[col].dtype == np.float:
-            df[col] = df[col].astype(float)
-    return df
+    # for col in df.columns: # for each column in the dataframe
+    #     if df[col].dtype == np.float64:
+    #         df[col] = df[col].astype(float)
+    # return df
 
 # def mean
 def calc(df):
