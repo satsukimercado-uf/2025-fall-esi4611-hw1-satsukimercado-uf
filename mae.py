@@ -4,15 +4,16 @@ import numpy as np
 
 def main(): 
     arr_in = read_csv()
-    arr_out = calc(arr_in)
-    df = corr(arr_in)
+    corr_out = corr(arr_in)
+    df_out = calc(arr_in, corr_out)
 
 def read_csv():
     df = pd.read_csv("quartet.csv")
     arr = np.array(df)
     return arr
 
-def calc(arr_in):
+def calc(arr_in, corr_out):
+    xy_corr = corr_in
     # store output
     n_row = int(1) # 1 row
     n_col = int(arr_in.shape[1]) # 8 columns
@@ -36,18 +37,32 @@ def calc(arr_in):
     y_var = arr_var[:, 1:]
 
     # stack array
-    arr_out = np.hstack([x_mn, y_mn, x_var, y_var])
+    arr_out = np.hstack([x_mn, y_mn, x_var, y_var, xy_corr])
     # print(arr_out)
-    
+
+    # array to df
+    col_names = ('x_mean', 'y_mean', 'x_var', 'y_var', 'xy_correlation')
+    df_out = pd.DataFrame(arr_out, columns = col_names)    
+    # print(df_out)
+    return df_out
+
 def corr(arr_in):
     # output array
-    
+    n_row = int(arr_in.shape[1]/2) # columns = num of pairs
+    n_col = 1 # 1 column 
+    corr_out = np.empty((n_row, n_col))
+
     # split array
     n_col = arr_in.shape[1]
     for i in range(0, n_col,2): # (start, end, step)
-        p = arr_in[:, i:i+2] # one pair
-        print(s)
-
+        # x and y in the same pair
+        j = int(i/2)       
+        x = arr_in[:, i:i+1] 
+        y = arr_in[:, i+1: i+2] 
+        corr_mtx= np.corrcoef(x,y, rowvar = False) # matrix, rowvar = False transposes x and y 
+        corr_r = corr_mtx[0,1] # [0,1] and [1,0] contain the same value, do this to return a single r value
+        corr_out[j,0] = corr_r
+    return corr_out
 
 if __name__ == "__main__":
     main()
