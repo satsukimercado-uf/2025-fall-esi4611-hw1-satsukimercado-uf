@@ -11,9 +11,11 @@ def main():
     corr_out = corr(arr_in)
     # part a 
     df_out = calc(arr_in, corr_out)
-    print("part a: \n", df_out)
+    print("part a: \n", df_out, "\n")
     # part b 
-    lin_reg(arr_in)
+    least_rmse, set_num = lin_reg(arr_in)
+    # part c
+    lin_reg_perf(least_rmse, set_num)
 
 def read_csv():
     df = pd.read_csv("quartet.csv")
@@ -74,9 +76,13 @@ def corr(arr_in):
 
 def lin_reg(arr_in):
     n = arr_in.shape[1] # returns number of columns, step = 2 for pairs 
+    s = 1
+    rmse_list = []
+    least_rmse = 0 
+    print("part b:\n")
 
+    
     for i in range(0,n,2):
-
         x_train = arr_in[:, i].reshape(-1,1) # set i, x values 
         y_train = arr_in[:, i+1].reshape(-1,1) # set i, y values 
         # print(x_train, "\n", y_train)
@@ -85,11 +91,34 @@ def lin_reg(arr_in):
         model = LinearRegression()
         model.fit(x_train, y_train)
         y_pred = model.predict(x_train)
-        print("set ", i, "\n", y_pred, "\n")
-        # scatter plot true (x,y)
-        plt.scatter(x_train, y_train)
-        plt.plot(x_train, y_pred)
-    plt.show()
+        # print("set ", i, "\n", y_pred, "\n")
+
+        # line of best fit 
+        m = model.coef_[0,0] # [0,0] to return the value, not the entire array
+        b = model.intercept_[0] # [0] to return the value, not the entire row
+        # mse
+        mse = mean_squared_error(y_pred, y_train)
+        rmse = np.sqrt(mse)
+        rmse_list.append(rmse)
+
+        # output 
+        print("set ", s, ": y =", round(m,2), "x + ", round(b,2), "\nrmse =", round(rmse,4), "\n")
+        
+        # increment set
+        s = s + 1
+    
+    # find the set with the smallest valued rmse:
+    for j in range(1,len(rmse_list)):
+        if rmse_list[j] <= rmse_list[j-1]:
+            least_rmse = rmse_list[j]
+    # print(least_rmse, j+1)
+
+    # return smallest valued rmse & set 
+    return least_rmse, j+1
+
+def lin_reg_perf(least_rmse, set_num):
+    print("part c: \nThe set for which the linear regression performs the best is set", set_num, " with a RMSE of", round(least_rmse,4), ".")
+
 
 if __name__ == "__main__":
     main()
