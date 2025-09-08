@@ -1,18 +1,19 @@
 # packages
+from matplotlib import pyplot as plt
 import pandas as pd
 import numpy as np
 from sklearn.metrics import mean_squared_error
 from sklearn.linear_model import LinearRegression 
 
 def main(): 
-    # prep 
+    # prep data
     arr_in = read_csv()
     corr_out = corr(arr_in)
     # part a 
-    arr_out, df_out = calc(arr_in, corr_out)
+    df_out = calc(arr_in, corr_out)
     print("part a: \n", df_out)
     # part b 
-    lin_reg(arr_out)
+    lin_reg(arr_in)
 
 def read_csv():
     df = pd.read_csv("quartet.csv")
@@ -51,7 +52,7 @@ def calc(arr_in, corr_out):
     col_names = ('x_mean', 'y_mean', 'x_var', 'y_var', 'xy_correlation')
     df_out = pd.DataFrame(arr_out, columns = col_names)    
     # print(df_out)
-    return arr_out, df_out
+    return df_out
 
 def corr(arr_in):
     # output array
@@ -71,21 +72,24 @@ def corr(arr_in):
         corr_out[j,0] = corr_r
     return corr_out
 
-def lin_reg(arr_out):
-    n = arr_out.shape[1] # returns number of row, step = 2 for pairs 
+def lin_reg(arr_in):
+    n = arr_in.shape[1] # returns number of columns, step = 2 for pairs 
 
-    for i in range(0,n):
+    for i in range(0,n,2):
 
-        x_train = arr_out[i:].reshape(-1,1) # x in the set
-        y_train = arr_out[i,:].reshape(-1,1) # y in the set 
+        x_train = arr_in[:, i].reshape(-1,1) # set i, x values 
+        y_train = arr_in[:, i+1].reshape(-1,1) # set i, y values 
         # print(x_train, "\n", y_train)
 
         # linear regression 
         model = LinearRegression()
         model.fit(x_train, y_train)
         y_pred = model.predict(x_train)
-        print(y_pred, "\n")
-
+        print("set ", i, "\n", y_pred, "\n")
+        # scatter plot true (x,y)
+        plt.scatter(x_train, y_train)
+        plt.plot(x_train, y_pred)
+    plt.show()
 
 if __name__ == "__main__":
     main()
