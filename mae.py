@@ -1,11 +1,18 @@
 # packages
 import pandas as pd
 import numpy as np
+from sklearn.metrics import mean_squared_error
+from sklearn.linear_model import LinearRegression 
 
 def main(): 
+    # prep 
     arr_in = read_csv()
     corr_out = corr(arr_in)
-    df_out = calc(arr_in, corr_out)
+    # part a 
+    arr_out, df_out = calc(arr_in, corr_out)
+    print("part a: \n", df_out)
+    # part b 
+    lin_reg(arr_out)
 
 def read_csv():
     df = pd.read_csv("quartet.csv")
@@ -13,7 +20,7 @@ def read_csv():
     return arr
 
 def calc(arr_in, corr_out):
-    xy_corr = corr_in
+    xy_corr = corr_out
     # store output
     n_row = int(1) # 1 row
     n_col = int(arr_in.shape[1]) # 8 columns
@@ -44,7 +51,7 @@ def calc(arr_in, corr_out):
     col_names = ('x_mean', 'y_mean', 'x_var', 'y_var', 'xy_correlation')
     df_out = pd.DataFrame(arr_out, columns = col_names)    
     # print(df_out)
-    return df_out
+    return arr_out, df_out
 
 def corr(arr_in):
     # output array
@@ -63,6 +70,22 @@ def corr(arr_in):
         corr_r = corr_mtx[0,1] # [0,1] and [1,0] contain the same value, do this to return a single r value
         corr_out[j,0] = corr_r
     return corr_out
+
+def lin_reg(arr_out):
+    n = arr_out.shape[1] # returns number of row, step = 2 for pairs 
+
+    for i in range(0,n):
+
+        x_train = arr_out[i:].reshape(-1,1) # x in the set
+        y_train = arr_out[i,:].reshape(-1,1) # y in the set 
+        # print(x_train, "\n", y_train)
+
+        # linear regression 
+        model = LinearRegression()
+        model.fit(x_train, y_train)
+        y_pred = model.predict(x_train)
+        print(y_pred, "\n")
+
 
 if __name__ == "__main__":
     main()
