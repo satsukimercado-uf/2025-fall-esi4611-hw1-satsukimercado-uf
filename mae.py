@@ -101,6 +101,12 @@ def lin_reg(arr_in):
         rmse = np.sqrt(mse)
         rmse_list.append(rmse)
 
+        # plot to see result
+        plt.clf()
+        plt.scatter(x_train, y_train)
+        plt.plot(x_train, y_pred)
+        plt.show()
+
         # output 
         print("set ", s, ": y =", round(m,2), "x + ", round(b,2), "\nrmse =", round(rmse,4), "\n")
         
@@ -108,13 +114,10 @@ def lin_reg(arr_in):
         s = s + 1
     
     # find the set with the smallest valued rmse:
-    for j in range(1,len(rmse_list)):
-        if rmse_list[j] <= rmse_list[j-1]:
-            least_rmse = rmse_list[j]
-    # print(least_rmse, j+1)
+    least_rmse = min(rmse_list) # returns smallest value 
+    ind_least_rmse = rmse_list.index(least_rmse) + 1 # return the set number 
 
-    # return smallest valued rmse & set 
-    return least_rmse, j+1
+    return least_rmse, ind_least_rmse
 
 def lin_reg_perf(least_rmse, set_num):
     print("part c: \nThe set for which the linear regression performs the best is set", set_num, " with a RMSE of", round(least_rmse,4), ".")
