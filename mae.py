@@ -101,14 +101,14 @@ def lin_reg(arr_in):
         rmse = np.sqrt(mse)
         rmse_list.append(rmse)
 
-        # plot to see result
+    #     # output 
+        print("set ", s, ": y =", round(m,2), "x + ", round(b,2), "\nrmse =", round(rmse,4), "\n")
+        
+         # plot to see result
         plt.clf()
         plt.scatter(x_train, y_train)
         plt.plot(x_train, y_pred)
         plt.show()
-
-    #     # output 
-        print("set ", s, ": y =", round(m,2), "x + ", round(b,2), "\nrmse =", round(rmse,4), "\n")
         
     #     # increment set
         s = s + 1
